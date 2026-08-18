@@ -1,0 +1,33 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from quantecon import LinearStateSpace
+from scipy.stats import norm
+import random
+
+def plot_lss(A,
+         C,
+         G,
+         n=3,
+         ts_length=50):
+
+    ar = LinearStateSpace(A, C, G, mu_0=np.ones(n))
+    x, y = ar.simulate(ts_length)
+
+    fig, ax = plt.subplots()
+    y = y.flatten()
+    ax.plot(y, 'b-', lw=2, alpha=0.7)
+    ax.grid()
+    ax.set_xlabel('time', fontsize=12)
+    ax.set_ylabel('$y_t$', fontsize=12)
+    plt.show()
+
+ϕ_0, ϕ_1, ϕ_2 = 1.1, 0.8, -0.8
+
+A = [[1,     0,     0  ],
+     [ϕ_0,   ϕ_1,   ϕ_2],
+     [0,     1,     0  ]]
+
+C = np.zeros((3, 1))
+G = [0, 1, 0]
+
+plot_lss(A, C, G)
