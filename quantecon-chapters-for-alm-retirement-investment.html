@@ -1,305 +1,226 @@
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>QuantEcon ALM Reading List</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ALM Chapters — QuantEcon Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
-    font-size: 14px;
-    line-height: 1.6;
-    background: #ffffff;
-    color: #1f2328;
-    padding: 32px 16px 48px;
+  :root{
+    --g100:#161616; --g90:#262626; --g70:#525252; --g30:#c6c6c6; --g20:#e0e0e0; --g10:#f4f4f4;
+    --white:#ffffff;
+    --blue60:#0f62fe; --blue70:#0043ce; --blue10:#edf5ff;
+    --first:#24a148; --first-bg:#defbe6;
+    --inter:#0f62fe; --inter-bg:#edf5ff;
+    --adv:#a00217; --adv-bg:#f6f2ff;
+    --max:1120px;
   }
-  .container { max-width: 760px; margin: 0 auto; }
-  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-  .subtitle { color: #57606a; font-size: 13px; margin-bottom: 28px; }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--g100);
+    font-family:"IBM Plex Sans", -apple-system, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    background-color:var(--white);
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(15,98,254,.06), transparent 42%),
+      radial-gradient(circle at 88% 8%, rgba(15,98,254,.045), transparent 38%),
+      radial-gradient(circle at 75% 85%, rgba(15,98,254,.05), transparent 46%),
+      radial-gradient(circle at 20% 95%, rgba(15,98,254,.035), transparent 40%);
+    background-size:180% 180%, 160% 160%, 200% 200%, 170% 170%;
+    background-repeat:no-repeat;
+    animation:drift 50s ease-in-out infinite alternate;
+  }
+  @keyframes drift{
+    0%  {background-position:0% 0%, 100% 0%, 100% 100%, 0% 100%;}
+    50% {background-position:10% 15%, 85% 15%, 80% 80%, 15% 85%;}
+    100%{background-position:0% 0%, 100% 0%, 100% 100%, 0% 100%;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    body{animation:none;}
+    *{animation-duration:.01ms !important; animation-iteration-count:1 !important;}
+  }
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--blue60); outline-offset:2px;}
 
-  .tier { margin-bottom: 32px; }
-  .tier-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-    padding-bottom: 6px;
-    border-bottom: 2px solid #e5e7eb;
-  }
-  .tier-badge {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 3px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .badge-core    { background: #1f2328; color: #fff; }
-  .badge-high    { background: #3b82d4; color: #fff; }
-  .badge-context { background: #7c5cd8; color: #fff; }
-  .tier-title { font-size: 15px; font-weight: 600; }
+  header.bar{border-bottom:1px solid var(--g20); position:sticky; top:0; background:var(--white); z-index:20;}
+  .bar-inner{max-width:var(--max); margin:0 auto; padding:0 2rem; height:48px; display:flex; align-items:center; justify-content:space-between;}
+  .brand{font-family:"IBM Plex Mono", monospace; font-weight:500; font-size:.9rem; letter-spacing:.02em; text-decoration:none; display:flex; align-items:center; gap:.5rem;}
+  .brand .dot{width:8px; height:8px; background:var(--blue60); display:inline-block;}
+  .crumb{font-family:"IBM Plex Mono", monospace; font-size:.75rem; color:var(--g70); text-decoration:none;}
+  .crumb:hover{color:var(--blue60);}
 
-  table { width: 100%; border-collapse: collapse; }
-  thead th {
-    text-align: left;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #57606a;
-    padding: 6px 10px;
-    background: #f7f8fa;
-    border: 1px solid #e5e7eb;
-  }
-  tbody td {
-    padding: 8px 10px;
-    border: 1px solid #e5e7eb;
-    vertical-align: top;
-  }
-  tbody tr:nth-child(even) td { background: #f7f8fa; }
-  .series-tag {
-    font-size: 10px;
-    font-weight: 600;
-    color: #57606a;
-    background: #e5e7eb;
-    padding: 1px 5px;
-    border-radius: 2px;
-    white-space: nowrap;
-  }
-  .chapter-name { font-weight: 500; }
-  .rationale { color: #57606a; font-size: 13px; }
+  .hero{max-width:var(--max); margin:0 auto; padding:3.5rem 2rem 3rem; border-bottom:1px solid var(--g20);}
+  .eyebrow{font-family:"IBM Plex Mono", monospace; font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; color:var(--blue60); margin:0 0 1rem;}
+  .accent-line{width:56px; height:2px; background:var(--g20); position:relative; overflow:hidden; margin:0 0 1.5rem;}
+  .accent-line::after{content:""; position:absolute; top:0; left:-40%; width:40%; height:100%; background:var(--blue60); animation:sweep 4s ease-in-out infinite;}
+  @keyframes sweep{0%{left:-40%;} 50%{left:100%;} 100%{left:-40%;}}
+  h1{font-size:2.6rem; line-height:1.1; font-weight:300; margin:0 0 1rem; letter-spacing:-.01em; max-width:20ch;}
+  h1 strong{font-weight:600;}
+  .hero p.lede{font-size:1rem; line-height:1.6; color:var(--g70); max-width:62ch; margin:0 0 1.75rem;}
 
-  .note {
-    background: #f7f8fa;
-    border-left: 3px solid #3b82d4;
-    padding: 12px 14px;
-    margin-top: 28px;
-    font-size: 13px;
-    color: #1f2328;
-  }
-  .note strong { color: #1f2328; }
+  .legend{display:flex; gap:1.75rem; flex-wrap:wrap; font-family:"IBM Plex Mono", monospace; font-size:.75rem; color:var(--g70);}
+  .legend span{display:inline-flex; align-items:center; gap:.45rem;}
+  .legend i{width:9px; height:9px; display:inline-block;}
+  .legend .fc{background:var(--first);} .legend .ic{background:var(--inter);} .legend .ac{background:var(--adv);}
 
-  footer {
-    margin-top: 48px;
-    padding-top: 12px;
-    border-top: 1px solid #e5e7eb;
-    text-align: center;
-    font-size: 12px;
-    color: #57606a;
-    font-weight: 300;
+  main{max-width:var(--max); margin:0 auto; padding:0 2rem 6rem;}
+
+  .group{padding-top:3.5rem;}
+  .group-head{display:flex; align-items:baseline; gap:1rem; margin-bottom:.4rem;}
+  .group-num{font-family:"IBM Plex Mono", monospace; color:var(--blue60); font-size:.85rem;}
+  .group h2{font-size:1.5rem; font-weight:500; margin:0;}
+  .group .sub{font-family:"IBM Plex Mono", monospace; font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; color:var(--g70); margin:0 0 1.5rem 0; padding-left:2.4rem;}
+
+  table{width:100%; border-collapse:collapse; font-size:.9rem;}
+  thead th{
+    text-align:left; font-family:"IBM Plex Mono", monospace; font-weight:500; font-size:.7rem;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--g70);
+    border-bottom:1px solid var(--g30); padding:0 1rem .75rem;
   }
-  .chapter-name a {
-    color: inherit;
-    text-decoration: none;
+  thead th:first-child{padding-left:0;}
+  tbody td{padding:1.1rem 1rem; border-bottom:1px solid var(--g20); vertical-align:top; line-height:1.5;}
+  tbody td:first-child{padding-left:0;}
+  tbody tr:hover{background:var(--g10);}
+  .col-ch{font-family:"IBM Plex Mono", monospace; font-weight:500; white-space:nowrap; width:22%;}
+  .col-tag{width:11%;}
+  .col-why{color:var(--g90); width:67%;}
+
+  .tag{
+    font-family:"IBM Plex Mono", monospace; font-size:.68rem; letter-spacing:.04em;
+    padding:.2rem .5rem; display:inline-block; font-weight:500;
   }
-  .chapter-name a:hover {
-    text-decoration: underline;
+  .tag.first{color:var(--first); background:var(--first-bg);}
+  .tag.inter{color:var(--inter); background:var(--inter-bg);}
+  .tag.adv{color:var(--adv); background:var(--adv-bg);}
+
+  /* Reading order */
+  .path{padding-top:4rem;}
+  .path h2{font-size:1.5rem; font-weight:500; margin:0 0 .35rem;}
+  .path .sub{font-family:"IBM Plex Mono", monospace; font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; color:var(--g70); margin:0 0 2rem;}
+  .path-track{
+    display:flex; flex-wrap:wrap; align-items:stretch; gap:0; border-top:1px solid var(--g30); border-bottom:1px solid var(--g30);
+  }
+  .step{
+    flex:1 1 150px; padding:1.25rem 1.25rem 1.25rem 0; position:relative;
+    border-right:1px solid var(--g20);
+  }
+  .step:last-child{border-right:none;}
+  .step .n{font-family:"IBM Plex Mono", monospace; font-size:.7rem; color:var(--blue60); display:block; margin-bottom:.5rem;}
+  .step .t{font-size:.85rem; font-weight:500; line-height:1.4; margin-bottom:.25rem;}
+  .step .d{font-size:.75rem; color:var(--g70);}
+  .step + .step::before{
+    content:"→"; position:absolute; left:-11px; top:1.35rem; color:var(--g30); font-size:.8rem;
+  }
+
+  footer{border-top:1px solid var(--g20); margin-top:5rem; padding:1.5rem 2rem; max-width:var(--max); margin-left:auto; margin-right:auto;
+    display:flex; justify-content:space-between; align-items:center; font-family:"IBM Plex Mono", monospace; font-size:.72rem; color:var(--g70);}
+
+  @media (max-width:760px){
+    h1{font-size:2rem;}
+    .group .sub, .group-head{padding-left:0;}
+    thead{display:none;}
+    tbody td{display:block; padding:.25rem 0; border-bottom:none;}
+    tbody tr{display:block; padding:1rem 0; border-bottom:1px solid var(--g20);}
+    .col-ch{width:auto;}
+    .step{border-right:none; border-bottom:1px solid var(--g20); flex:1 1 100%;}
+    .step + .step::before{display:none;}
   }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <h1>QuantEcon Recommended Chapters</h1>
-  <p class="subtitle">Asset &amp; Liability Management — Savings and Retirement Investment Focus</p>
+<header class="bar">
+  <div class="bar-inner">
+    <a class="brand" href="index.html"><span class="dot"></span>QUANTECON / NOTES</a>
+    <a class="crumb" href="index.html">&larr; back to notes</a>
+  </div>
+</header>
 
-  
-  <div class="tier">
-    <div class="tier-header">
-      <span class="tier-badge badge-core">Core</span>
-      <span class="tier-title">Must-Read: Directly Models ALM Problems</span>
-    </div>
+<section class="hero">
+  <p class="eyebrow">Reading list 01</p>
+  <div class="accent-line"></div>
+  <h1>Asset &amp; Liability <strong>Management</strong></h1>
+  <p class="lede">Savings and retirement investment focus. Chapters pulled from the QuantEcon lecture series and ranked by relevance to modelling pension liabilities, decumulation, and long-horizon portfolio design.</p>
+  <div class="legend">
+    <span><i class="fc"></i>First course — foundational intuition</span>
+    <span><i class="ic"></i>Intermediate — applied models</span>
+    <span><i class="ac"></i>Advanced — theory &amp; robustness</span>
+  </div>
+</section>
+
+<main>
+
+  <div class="group">
+    <div class="group-head"><span class="group-num">01</span><h2>Core Must-Read</h2></div>
+    <p class="sub">Directly models ALM problems</p>
     <table>
-      <thead>
-        <tr>
-          <th style="width:38%">Chapter</th>
-          <th style="width:10%">Series</th>
-          <th>Why It Matters for ALM</th>
-        </tr>
-      </thead>
+      <thead><tr><th class="col-ch">Chapter</th><th class="col-tag">Series</th><th class="col-why">Why it matters for ALM</th></tr></thead>
       <tbody>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://intro.quantecon.org/cons_smooth.html">Ch 12 — Consumption Smoothing</a>
-          </td>
-          <td><span class="series-tag">FIRST</span></td>
-          <td class="rationale">Core ALM intuition: matching spending liabilities to asset income over time.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python.quantecon.org/perm_income.html">Ch 75 — The Permanent Income Model</a>
-            </td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Formal model of optimal saving/consumption under income uncertainty — the backbone of retirement planning theory.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python.quantecon.org/perm_income_cons.html">Ch 76 — Permanent Income II: LQ Techniques</a></td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Solves the permanent income model computationally; shows how to implement lifecycle savings strategies.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python.quantecon.org/lq_bewley_complete_markets.html">Ch 81 — Consumption Smoothing with Incomplete and Complete Markets</a></td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Models how access to financial instruments (bonds, annuities) changes optimal retirement portfolios.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python.quantecon.org/ifp_discrete.html">Ch 67–68 — Income Fluctuation Problem I</a> &amp; <a href="https://python.quantecon.org/ifp_opi.html">II</a></td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Household buffer-stock saving under income risk — directly relevant to defined-contribution retirement accounts.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            Ch 61–65 — 
-            <a href="https://python.quantecon.org/os.html">Optimal Savings I</a>,
-            <a href="https://python.quantecon.org/os_numerical.html">II</a>,
-            <a href="https://python.quantecon.org/os_stochastic.html">III</a>,
-            <a href="https://python.quantecon.org/os_time_iter.html">IV</a>,
-            <a href="https://python.quantecon.org/os_egm.html">V (Cake Eating)</a>
-          </td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Step-by-step build-up of the finite-horizon drawdown problem; models decumulation (spending down a retirement pot).</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python.quantecon.org/aiyagari.html">Ch 94 — The Aiyagari Model</a>
-          </td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Heterogeneous-agent model of wealth accumulation under uninsurable income risk — standard framework for pension fund design analysis.</td>
-        </tr>
+        <tr><td class="col-ch"><a href="https://intro.quantecon.org/cons_smooth.html">Ch 12 — Consumption Smoothing</a></td><td><span class="tag first">FIRST</span></td><td class="col-why">Core ALM intuition: matching spending liabilities to asset income over time.</td></tr>
+        <tr><td class="col-ch"><a href="https://python.quantecon.org/perm_income.html">Ch 75 — The Permanent Income Model</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Formal model of optimal saving/consumption under income uncertainty — the backbone of retirement planning theory.</td></tr>
+        <tr><td class="col-ch"><a href="https://python.quantecon.org/perm_income_cons.html">Ch 76 — Permanent Income II: LQ Techniques</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Solves the permanent income model computationally; shows how to implement lifecycle savings strategies.</td></tr>
+        <tr><td class="col-ch"><a href="https://python.quantecon.org/lq_bewley_complete_markets.html">Ch 85 — Consumption Smoothing with Incomplete and Complete Markets</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Models how access to financial instruments (bonds, annuities) changes optimal retirement portfolios.</td></tr>
+        <tr><td class="col-ch"><a href="https://python.quantecon.org/ifp_discrete.html">Ch 67–68 — Income Fluctuation Problem I</a> &amp; <a href="https://python.quantecon.org/ifp_opi.html">II</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Household buffer-stock saving under income risk — directly relevant to defined-contribution retirement accounts.</td></tr>
+        <tr><td class="col-ch">Ch 61–65 — <a href="https://python.quantecon.org/os.html">Optimal Savings I</a>, <a href="https://python.quantecon.org/os_numerical.html">II</a>, <a href="https://python.quantecon.org/os_stochastic.html">III</a>, <a href="https://python.quantecon.org/os_time_iter.html">IV</a>, <a href="https://python.quantecon.org/os_egm.html">V (Cake Eating)</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Step-by-step build-up of the finite-horizon drawdown problem; models decumulation (spending down a retirement pot).</td></tr>
+        <tr><td class="col-ch"><a href="https://python.quantecon.org/aiyagari.html">Ch 94 — The Aiyagari Model</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Heterogeneous-agent model of wealth accumulation under uninsurable income risk — standard framework for pension fund design analysis.</td></tr>
       </tbody>
     </table>
   </div>
 
-  
-  <div class="tier">
-    <div class="tier-header">
-      <span class="tier-badge badge-high">High Value</span>
-      <span class="tier-title">Asset Pricing &amp; Portfolio Theory</span>
-    </div>
+  <div class="group">
+    <div class="group-head"><span class="group-num">02</span><h2>Asset Pricing &amp; Portfolio Theory</h2></div>
+    <p class="sub">High value for ALM</p>
     <table>
-      <thead>
-        <tr>
-          <th style="width:38%">Chapter</th>
-          <th style="width:10%">Series</th>
-          <th>Why It Matters for ALM</th>
-        </tr>
-      </thead>
+      <thead><tr><th class="col-ch">Chapter</th><th class="col-tag">Series</th><th class="col-why">Why it matters for ALM</th></tr></thead>
       <tbody>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python-advanced.quantecon.org/asset_pricing_lph.html">Ch 42 — Elementary Asset Pricing Theory</a>
-          </td>
-          <td><span class="series-tag">ADV</span></td>
-          <td class="rationale">State-price deflators, no-arbitrage pricing — essential for valuing pension liabilities and annuities.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python-advanced.quantecon.org/black_litterman.html">Ch 45 — Two Modifications of Mean-Variance Portfolio Theory</a>
-          </td>
-          <td><span class="series-tag">ADV</span></td>
-          <td class="rationale">Directly addresses portfolio construction; mean-variance is the standard ALM optimisation framework.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python.quantecon.org/markov_asset.html">Ch 99 — Asset Pricing: Finite State Models</a>
-          </td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Pricing bonds and equity in discrete settings; needed for liability-matching bond portfolios.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python.quantecon.org/hansen_singleton_1983.html">Ch 100 — Stochastic Consumption, Risk Aversion &amp; Asset Returns</a>
-          </td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Links investor risk aversion to required returns — core to setting long-run return assumptions in retirement plans.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python-advanced.quantecon.org/hansen_jagannathan_1991.html">Ch 44 — The Hansen-Jagannathan Bound</a>
-          </td>
-          <td><span class="series-tag">ADV</span></td>
-          <td class="rationale">Benchmark for evaluating whether a portfolio's risk/return is consistent with any rational preference model.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python.quantecon.org/ge_arrow.html">Ch 102 — Competitive Equilibria with Arrow Securities</a>
-          </td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Complete markets benchmark for hedging longevity and income risks in pension design.</td>
-        </tr>
+        <tr><td class="col-ch"><a href="https://python-advanced.quantecon.org/asset_pricing_lph.html">Ch 42 — Elementary Asset Pricing Theory</a></td><td><span class="tag adv">ADV</span></td><td class="col-why">State-price deflators, no-arbitrage pricing — essential for valuing pension liabilities and annuities.</td></tr>
+        <tr><td class="col-ch"><a href="https://python-advanced.quantecon.org/black_litterman.html">Ch 45 — Two Modifications of Mean-Variance Portfolio Theory</a></td><td><span class="tag adv">ADV</span></td><td class="col-why">Directly addresses portfolio construction; mean-variance is the standard ALM optimisation framework.</td></tr>
+        <tr><td class="col-ch"><a href="https://python.quantecon.org/markov_asset.html">Ch 99 — Asset Pricing: Finite State Models</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Pricing bonds and equity in discrete settings; needed for liability-matching bond portfolios.</td></tr>
+        <tr><td class="col-ch"><a href="https://python.quantecon.org/hansen_singleton_1983.html">Ch 100 — Stochastic Consumption, Risk Aversion &amp; Asset Returns</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Links investor risk aversion to required returns — core to setting long-run return assumptions in retirement plans.</td></tr>
+        <tr><td class="col-ch"><a href="https://python-advanced.quantecon.org/hansen_jagannathan_1991.html">Ch 44 — The Hansen-Jagannathan Bound</a></td><td><span class="tag adv">ADV</span></td><td class="col-why">Benchmark for evaluating whether a portfolio's risk/return is consistent with any rational preference model.</td></tr>
+        <tr><td class="col-ch"><a href="https://python.quantecon.org/ge_arrow.html">Ch 102 — Competitive Equilibria with Arrow Securities</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Complete markets benchmark for hedging longevity and income risks in pension design.</td></tr>
       </tbody>
     </table>
   </div>
 
-  
-  <div class="tier">
-    <div class="tier-header">
-      <span class="tier-badge badge-context">Context</span>
-      <span class="tier-title">Risk, Uncertainty &amp; Robustness</span>
-    </div>
+  <div class="group">
+    <div class="group-head"><span class="group-num">03</span><h2>Risk, Uncertainty &amp; Robustness</h2></div>
+    <p class="sub">Context for ALM</p>
     <table>
-      <thead>
-        <tr>
-          <th style="width:38%">Chapter</th>
-          <th style="width:10%">Series</th>
-          <th>Why It Matters for ALM</th>
-        </tr>
-      </thead>
+      <thead><tr><th class="col-ch">Chapter</th><th class="col-tag">Series</th><th class="col-why">Why it matters for ALM</th></tr></thead>
       <tbody>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python-advanced.quantecon.org/five_preferences.html">Ch 28 — Risk and Model Uncertainty</a>
-          </td>
-          <td><span class="series-tag">ADV</span></td>
-          <td class="rationale">Distinguishes risk (known distribution) from ambiguity — critical for long-horizon retirement planning where distributions are unknown.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python-advanced.quantecon.org/robustness.html">Ch 30 — Robustness</a>
-          </td>
-          <td><span class="series-tag">ADV</span></td>
-          <td class="rationale">How to make savings/investment decisions that are robust to model misspecification — directly applicable to stress-testing ALM models.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python.quantecon.org/lq_robust_smoothing.html">Ch 82 — Robust Consumption Smoothing and Precautionary Savings</a>
-          </td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Precautionary saving motive under ambiguity — explains why retirement buffers exist beyond pure optimization.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://intro.quantecon.org/ar1_processes.html">Ch 34 — AR(1) Processes</a>
-          </td>
-          <td><span class="series-tag">FIRST</span></td>
-          <td class="rationale">Foundation for modelling interest rates, asset returns, and wage processes used in all lifecycle models.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python.quantecon.org/finite_markov.html">Ch 38 — Finite Markov Chains</a>
-          </td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Models regime-switching in asset returns and employment states — standard in stochastic ALM scenario generation.</td>
-        </tr>
-        <tr>
-          <td class="chapter-name">
-            <a href="https://python.quantecon.org/two_computation.html">Ch 98 — Two Computations to Fund Social Security</a>
-          </td>
-          <td><span class="series-tag">INTER</span></td>
-          <td class="rationale">Directly models public pension funding — most applicable chapter to institutional retirement fund management.</td>
-        </tr>
+        <tr><td class="col-ch"><a href="https://python-advanced.quantecon.org/five_preferences.html">Ch 28 — Risk and Model Uncertainty</a></td><td><span class="tag adv">ADV</span></td><td class="col-why">Distinguishes risk (known distribution) from ambiguity — critical for long-horizon retirement planning where distributions are unknown.</td></tr>
+        <tr><td class="col-ch"><a href="https://python-advanced.quantecon.org/robustness.html">Ch 30 — Robustness</a></td><td><span class="tag adv">ADV</span></td><td class="col-why">How to make savings/investment decisions that are robust to model misspecification — directly applicable to stress-testing ALM models.</td></tr>
+        <tr><td class="col-ch"><a href="https://python.quantecon.org/lq_robust_smoothing.html">Ch 82 — Robust Consumption Smoothing and Precautionary Savings</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Precautionary saving motive under ambiguity — explains why retirement buffers exist beyond pure optimization.</td></tr>
+        <tr><td class="col-ch"><a href="https://intro.quantecon.org/ar1_processes.html">Ch 34 — AR(1) Processes</a></td><td><span class="tag first">FIRST</span></td><td class="col-why">Foundation for modelling interest rates, asset returns, and wage processes used in all lifecycle models.</td></tr>
+        <tr><td class="col-ch"><a href="https://python.quantecon.org/finite_markov.html">Ch 38 — Finite Markov Chains</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Models regime-switching in asset returns and employment states — standard in stochastic ALM scenario generation.</td></tr>
+        <tr><td class="col-ch"><a href="https://python.quantecon.org/two_computation.html">Ch 98 — Two Computations to Fund Social Security</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Directly models public pension funding — most applicable chapter to institutional retirement fund management.</td></tr>
       </tbody>
     </table>
   </div>
 
-  <div class="note">
-    <strong>Suggested reading order:</strong>
-    Start with <strong>First Course Ch 12</strong> (intuition) → <strong>Intermediate Ch 61–65</strong> (cake-eating / decumulation) → <strong>Ch 75–76</strong> (permanent income) → <strong>Ch 67–68</strong> (income fluctuation) → <strong>Ch 81, 94</strong> (markets &amp; heterogeneity) → then branch into <strong>Asset Pricing</strong> (Ch 99–100, Adv Ch 42, 45) and <strong>Robustness</strong> (Adv Ch 28, 30) as needed.
+  <div class="path">
+    <h2>Suggested Reading Order</h2>
+    <p class="sub">Intuition first, then computation, then theory</p>
+    <div class="path-track">
+      <div class="step"><span class="n">01</span><div class="t">Ch 12</div><div class="d">First Course — intuition</div></div>
+      <div class="step"><span class="n">02</span><div class="t">Ch 61–65</div><div class="d">Cake-eating / decumulation</div></div>
+      <div class="step"><span class="n">03</span><div class="t">Ch 75–76</div><div class="d">Permanent income</div></div>
+      <div class="step"><span class="n">04</span><div class="t">Ch 67–68</div><div class="d">Income fluctuation</div></div>
+      <div class="step"><span class="n">05</span><div class="t">Ch 81, 94</div><div class="d">Markets &amp; heterogeneity</div></div>
+      <div class="step"><span class="n">06</span><div class="t">Ch 99–100, 42, 45</div><div class="d">Asset pricing</div></div>
+      <div class="step"><span class="n">07</span><div class="t">Ch 28, 30</div><div class="d">Robustness — as needed</div></div>
+    </div>
   </div>
 
-  <footer>Made with IBM Bob</footer>
-</div>
+</main>
+
+<footer>
+  <span>QuantEcon Notes — personal project</span>
+</footer>
+
 </body>
 </html>
