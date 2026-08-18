@@ -54,7 +54,7 @@
 
   .hero{max-width:var(--max); margin:0 auto; padding:3.5rem 2rem 3rem; border-bottom:1px solid var(--g20);}
   .eyebrow{font-family:"IBM Plex Mono", monospace; font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; color:var(--blue60); margin:0 0 1rem;}
-  .accent-line{width:56px; height:2px; background:var(--g20); position:relative; overflow:hidden; margin:0 0 1.5rem;}
+  .accent-line{width:100%; max-width:250px; height:2px; background:var(--g20); position:relative; overflow:hidden; margin:0 0 1.5rem;}
   .accent-line::after{content:""; position:absolute; top:0; left:-40%; width:40%; height:100%; background:var(--blue60); animation:sweep 4s ease-in-out infinite;}
   @keyframes sweep{0%{left:-40%;} 50%{left:100%;} 100%{left:-40%;}}
   h1{font-size:2.6rem; line-height:1.1; font-weight:300; margin:0 0 1rem; letter-spacing:-.01em; max-width:20ch;}
@@ -87,7 +87,13 @@
   .col-ch{font-family:"IBM Plex Mono", monospace; font-weight:500; white-space:nowrap; width:22%;}
   .col-tag{width:11%;}
   .col-why{color:var(--g90); width:67%;}
+  .run-link{
+    font-family:"IBM Plex Mono", monospace; font-size:.68rem; font-weight:500;
+    color:var(--blue60); background:var(--inter-bg); text-decoration:none;
+    padding:.15rem .45rem; margin-left:.5rem; white-space:nowrap;
+  }
 
+  .run-link:hover{background:var(--blue60); color:var(--white);}
   .tag{
     font-family:"IBM Plex Mono", monospace; font-size:.68rem; letter-spacing:.04em;
     padding:.2rem .5rem; display:inline-block; font-weight:500;
@@ -141,8 +147,8 @@
 
 <section class="hero">
   <p class="eyebrow">Reading list 01</p>
-  <div class="accent-line"></div>
   <h1>Asset &amp; Liability <strong>Management</strong></h1>
+  <div class="accent-line"></div>
   <p class="lede">Savings and retirement investment focus. Chapters pulled from the QuantEcon lecture series and ranked by relevance to modelling pension liabilities, decumulation, and long-horizon portfolio design.</p>
   <div class="legend">
     <span><i class="fc"></i>First course — foundational intuition</span>
@@ -159,7 +165,7 @@
     <table>
       <thead><tr><th class="col-ch">Chapter</th><th class="col-tag">Series</th><th class="col-why">Why it matters for ALM</th></tr></thead>
       <tbody>
-        <tr><td class="col-ch"><a href="https://intro.quantecon.org/cons_smooth.html">Ch 12 — Consumption Smoothing</a></td><td><span class="tag first">FIRST</span></td><td class="col-why">Core ALM intuition: matching spending liabilities to asset income over time.</td></tr>
+        <tr><td class="col-ch"><a href="https://intro.quantecon.org/cons_smooth.html">Ch 12 — Consumption Smoothing</a><a class="run-link" href="content/ch12-consumption-smoothing.ipynb" target="_blank" rel="noopener">▶ Run</a></td><td><span class="tag first">FIRST</span></td><td class="col-why">Core ALM intuition: matching spending liabilities to asset income over time.</td></tr>
         <tr><td class="col-ch"><a href="https://python.quantecon.org/perm_income.html">Ch 75 — The Permanent Income Model</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Formal model of optimal saving/consumption under income uncertainty — the backbone of retirement planning theory.</td></tr>
         <tr><td class="col-ch"><a href="https://python.quantecon.org/perm_income_cons.html">Ch 76 — Permanent Income II: LQ Techniques</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Solves the permanent income model computationally; shows how to implement lifecycle savings strategies.</td></tr>
         <tr><td class="col-ch"><a href="https://python.quantecon.org/lq_bewley_complete_markets.html">Ch 85 — Consumption Smoothing with Incomplete and Complete Markets</a></td><td><span class="tag inter">INTER</span></td><td class="col-why">Models how access to financial instruments (bonds, annuities) changes optimal retirement portfolios.</td></tr>

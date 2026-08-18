@@ -1,0 +1,34 @@
+name: Build JupyterLite and deploy Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install JupyterLite
+        run: pip install -r requirements.txt
+
+      # Builds the notebooks in content/ into a static site at notebooks/
+      - name: Build JupyterLite site
+        run: jupyter lite build --contents content --output-dir notebooks
+
+      # Deploys the whole repo root (your existing index.html + chapters page
+      # + the freshly-built notebooks/ folder) to the gh-pages branch.
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          exclude_assets: ".github,content,requirements.txt,jupyter_lite_config.json"

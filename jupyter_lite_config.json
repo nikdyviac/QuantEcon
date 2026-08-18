@@ -1,0 +1,6 @@
+{
+  "LiteBuildConfig": {
+    "app_archive": null,
+    "ignore_sys_prefix": true
+  }
+}
